@@ -4,3 +4,5 @@ This is a fork of the Apache Tomcat CGI servlet for use in other Java EE web con
 
 It is based on version 7 Tomcat code.
 
+There's no documentation here; for now, see http://tomcat.apache.org/tomcat-7.0-doc/cgi-howto.html
+
