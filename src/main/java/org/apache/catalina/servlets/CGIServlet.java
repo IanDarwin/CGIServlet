@@ -598,8 +598,8 @@ public final class CGIServlet extends HttpServlet {
         if (debug >= 10) {
 
             ServletOutputStream out = res.getOutputStream();
-            out.println("<HTML><HEAD><TITLE>$Name$</TITLE></HEAD>");
-            out.println("<BODY>$Header$<p>");
+            out.println("<HTML><HEAD><TITLE>Apache Tomcat CGIServlet</TITLE></HEAD>");
+            out.println("<BODY>CGIServlet<p>");
 
             if (cgiEnv.isValid()) {
                 out.println(cgiEnv.toString());
