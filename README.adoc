@@ -1,0 +1,6 @@
+== CGI Servlet from Apache Tomcat
+
+This is a fork of the Apache Tomcat CGI servlet for use in other Java EE web containers.
+
+It is based on version 7 Tomcat code.
+
