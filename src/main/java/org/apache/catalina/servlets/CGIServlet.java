@@ -969,7 +969,6 @@ public final class CGIServlet extends HttpServlet {
             sCGIFullName = sCGINames[2];
             sCGIName = sCGINames[3];
 
-            System.out.printf("CGI: %s-%s-%s-%s%n", sCGIFullPath, sCGIScriptName, sCGIFullName, sCGIName);
             if (sCGIFullPath == null
                 || sCGIScriptName == null
                 || sCGIFullName == null
