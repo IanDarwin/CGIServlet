@@ -1,8 +1,59 @@
-== CGI Servlet from Apache Tomcat
+= CGI Servlet from Apache Tomcat
 
 This is a fork of the Apache Tomcat CGI servlet for use in other Java EE web containers.
 
 It is based on version 7 Tomcat code.
 
-There's no documentation here; for now, see http://tomcat.apache.org/tomcat-7.0-doc/cgi-howto.html
+== Usage
+
+The following parameters can be set, as init-parameters.
+All are from the standard Tomcat CGI servlet with the exception of cgiPathIsAbsolute.
+
+.Initialization Parameters
+[cols="^1,1,4",options="header"]
+|===================================================
+| Name | Default | Meaning 
+| "debug" | 0 | Level of debugging output. If >10 a dump will be appended to output. 
+| cgiPathPrefix | null | Path down from Context Root to where CGI programs live 
+| cgiPathIsAbsolute | false | If true, cgiPathPrefix is absolute path (this is
+not generally recommended for security reasons, but may be needed in some environments). 
+| executable | perl | If CGI programs are scripts, the interpreter to run them with 
+| executable-arg-n | null | Extra arguments to pass to the interpreter 
+| parameterEncoding | System.getProperty("file.encoding", "UTF-8) | File encoding 
+| stderrTimeout | n/a | Timeout for standard error output 
+|===================================================
+
+For example, the following what I use (with some juggling of file permissions) to run MailMan under WildFly 8.2:
+[source,xml]
+----
+  <!-- Tomcat's Common Gateway Includes (CGI) processing servlet for mailman -->
+  <servlet>
+     <servlet-name>cgi-mailman</servlet-name>
+     <servlet-class>org.apache.catalina.servlets.CGIServlet</servlet-class>
+     <init-param>
+        <param-name>clientInputTimeout</param-name>
+        <param-value>100</param-value>
+     </init-param>
+     <init-param>
+         <!-- Use empty string if file is executable -->
+         <param-name>executable</param-name>
+         <param-value></param-value>
+     </init-param>
+     <init-param>
+        <param-name>cgiPathPrefix</param-name>
+        <param-value>/usr/local/lib/mailman/cgi-bin/</param-value>
+     </init-param>
+     <init-param>
+        <param-name>cgiPathIsAbsolute</param-name>
+        <param-value>true</param-value>
+     </init-param>
+     <init-param>
+        <param-name>debug</param-name>
+        <param-value>3</param-value>
+     </init-param>
+      <load-on-startup>5</load-on-startup>
+    </servlet>
+----
+
+For more, see http://tomcat.apache.org/tomcat-7.0-doc/cgi-howto.html
 
