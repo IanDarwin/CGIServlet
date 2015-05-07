@@ -53,6 +53,11 @@ For example, the following what I use (with some juggling of file permissions) t
      </init-param>
       <load-on-startup>5</load-on-startup>
     </servlet>
+
+    <servlet-mapping>
+        <servlet-name>cgi-mailman</servlet-name>
+        <url-pattern>/mailman/*</url-pattern>
+    </servlet-mapping>
 ----
 
 For more, see http://tomcat.apache.org/tomcat-7.0-doc/cgi-howto.html
