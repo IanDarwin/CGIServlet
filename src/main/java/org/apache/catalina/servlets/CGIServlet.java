@@ -251,6 +251,8 @@ public final class CGIServlet extends HttpServlet {
      *    null)
      */
     private String cgiPathPrefix = null;
+    
+    private boolean cgiPathIsAbsolute;
 
     /** the executable to use with the script */
     private String cgiExecutable = "perl";
@@ -298,6 +300,9 @@ public final class CGIServlet extends HttpServlet {
         if (getServletConfig().getInitParameter("debug") != null)
             debug = Integer.parseInt(getServletConfig().getInitParameter("debug"));
         cgiPathPrefix = getServletConfig().getInitParameter("cgiPathPrefix");
+        if (getServletConfig().getInitParameter("cgiPathIsAbsolute") != null)
+        	cgiPathIsAbsolute = 
+        		Boolean.valueOf(getServletConfig().getInitParameter("cgiPathIsAbsolute")).booleanValue();
         boolean passShellEnvironment =
             Boolean.valueOf(getServletConfig().getInitParameter("passShellEnvironment")).booleanValue();
 
@@ -846,7 +851,7 @@ public final class CGIServlet extends HttpServlet {
          */
         protected String[] findCGI(String pathInfo, String webAppRootDir,
                                    String contextPath, String servletPath,
-                                   String cgiPathPrefix) {
+                                   String cgiPathPrefix, boolean cgiPathIsAbsolute) {
             String path = null;
             String name = null;
             String scriptname = null;
@@ -861,8 +866,8 @@ public final class CGIServlet extends HttpServlet {
             }
 
             if (cgiPathPrefix != null) {
-                webAppRootDir = webAppRootDir + File.separator
-                    + cgiPathPrefix;
+                webAppRootDir = cgiPathIsAbsolute ? cgiPathPrefix :
+                	webAppRootDir + File.separator + cgiPathPrefix;
             }
 
             if (debug >= 2) {
@@ -956,13 +961,15 @@ public final class CGIServlet extends HttpServlet {
                                 webAppRootDir,
                                 contextPath,
                                 servletPath,
-                                cgiPathPrefix);
+                                cgiPathPrefix,
+                                cgiPathIsAbsolute);
 
             sCGIFullPath = sCGINames[0];
             sCGIScriptName = sCGINames[1];
             sCGIFullName = sCGINames[2];
             sCGIName = sCGINames[3];
 
+            System.out.printf("CGI: %s-%s-%s-%s%n", sCGIFullPath, sCGIScriptName, sCGIFullName, sCGIName);
             if (sCGIFullPath == null
                 || sCGIScriptName == null
                 || sCGIFullName == null
@@ -970,7 +977,7 @@ public final class CGIServlet extends HttpServlet {
                 return false;
             }
 
-            envp.put("SERVER_SOFTWARE", "TOMCAT");
+            envp.put("SERVER_SOFTWARE", "APACHE TOMCAT CGI SERVLET");
 
             envp.put("SERVER_NAME", nullsToBlanks(req.getServerName()));
 
