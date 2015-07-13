@@ -13,7 +13,8 @@ All are from the standard Tomcat CGI servlet with the exception of cgiPathIsAbso
 [cols="^1,1,4",options="header"]
 |===================================================
 | Name | Default | Meaning 
-| "debug" | 0 | Level of debugging output. If >10 a dump will be appended to output. 
+| debug | 0 | Level of debugging output. If >10 a dump will be appended to output. 
+| passShellEnvironment | false | Whether any shell environment variables shall be passed to the CGI program
 | cgiPathPrefix | null | Path down from Context Root to where CGI programs live 
 | cgiPathIsAbsolute | false | If true, cgiPathPrefix is absolute path (this is
 not generally recommended for security reasons, but may be needed in some environments). 
